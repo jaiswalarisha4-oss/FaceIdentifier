@@ -1,0 +1,49 @@
+[
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "merkleRoot", "type": "bytes32" },
+      { "internalType": "string", "name": "metadataURI", "type": "string" }
+    ],
+    "name": "anchorProof",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "merkleRoot", "type": "bytes32" }
+    ],
+    "name": "getProof",
+    "outputs": [
+      { "internalType": "address", "name": "submitter", "type": "address" },
+      { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+      { "internalType": "string", "name": "metadataURI", "type": "string" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "", "type": "bytes32" }
+    ],
+    "name": "proofs",
+    "outputs": [
+      { "internalType": "address", "name": "submitter", "type": "address" },
+      { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+      { "internalType": "string", "name": "metadataURI", "type": "string" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes32", "name": "merkleRoot", "type": "bytes32" },
+      { "indexed": true, "internalType": "address", "name": "submitter", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+      { "indexed": false, "internalType": "string", "name": "metadataURI", "type": "string" }
+    ],
+    "name": "ProofAnchored",
+    "type": "event"
+  }
+]
