@@ -1,5 +1,7 @@
 # FaceIdentifier
 
+[![Tests](https://github.com/jaiswalarisha4-oss/FaceIdentifier/actions/workflows/tests.yml/badge.svg)](https://github.com/jaiswalarisha4-oss/FaceIdentifier/actions/workflows/tests.yml)
+
 A pipeline that takes a face scan, finds a real matching post about that
 face on the web/social media, and anchors tamper-evident proof of the
 discovery on a blockchain — end to end, with a standalone tool anyone can
