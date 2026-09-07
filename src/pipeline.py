@@ -16,7 +16,7 @@ from face_encoder import FaceEncoder
 from merkle import MerkleTree
 from perceptual_hash import compute_phash, hamming_similarity
 from simulated_chain import SimulatedChain
-from social_search import BingReverseImageSearch, SocialMatch
+from social_search import GoogleVisionReverseImageSearch, SocialMatch
 
 try:
     from testnet_chain import TestnetAnchor
@@ -52,7 +52,7 @@ class FaceVerificationPipeline:
         query_face_hash = self._salted_embedding_hash(embedding)
         query_phash = compute_phash(image_path)
 
-        candidates = BingReverseImageSearch().search(image_path)
+        candidates = GoogleVisionReverseImageSearch().search(image_path)
         if not candidates:
             raise RuntimeError("No social media matches found for this face scan.")
 

@@ -18,12 +18,16 @@ face scan  →  face detection & encoding  →  genuine reverse-image / social s
    [`face_recognition`](https://github.com/ageitgey/face_recognition)
    (dlib's ResNet face encoder).
 
-2. **Web / social media search** (`src/social_search.py`) — uploads the
-   image to Microsoft's **Bing Visual Search API** for a genuine reverse
-   image search (this is a real HTTP call to Bing on every run, not a
+2. **Web / social media search** (`src/social_search.py`) — sends the
+   image to **Google Cloud Vision's Web Detection API** for a genuine
+   reverse image search (this is a real HTTP call on every run, not a
    cached or hardcoded result), then filters the returned pages down to
    known social platforms (Instagram, X/Twitter, Facebook, TikTok, Reddit,
    LinkedIn, Pinterest, YouTube).
+   > This project originally targeted Bing's Visual Search API, but
+   > Microsoft retired the Bing Search API family (Web/Image/Visual
+   > Search) on August 11, 2025. Google Cloud Vision's Web Detection is
+   > the still-live equivalent used here instead.
 
 3. **Match confirmation** (`src/perceptual_hash.py`) — search engines can
    return pages that merely *mention* an image, not pages that show it. Each
@@ -113,8 +117,12 @@ sudo apt-get install -y cmake build-essential
 cp .env.example .env
 ```
 
-- `BING_VISUAL_SEARCH_KEY` is **required** for the search step — get a free
-  key from an Azure Cognitive Services "Bing Search v7" resource.
+- `GOOGLE_VISION_API_KEY` is **required** for the search step. To get one:
+  1. Go to [console.cloud.google.com](https://console.cloud.google.com/) and sign in (create a project if you don't have one — project dropdown → **New Project**).
+  2. **APIs & Services → Library** → search **Cloud Vision API** → **Enable**.
+  3. **APIs & Services → Credentials → Create Credentials → API key** — copy the key it generates.
+  4. (Recommended) Click the new key → **API restrictions** → restrict it to **Cloud Vision API** only.
+  5. Google may prompt you to attach a billing account to activate the API — the Web Detection feature used here has a free tier of 1,000 units/month, so a hackathon demo won't be charged; set a budget alert if you want a safety net.
 - `RPC_URL` / `PRIVATE_KEY` / `CONTRACT_ADDRESS` are **optional** — leave
   them blank to use the simulated chain.
 
@@ -164,7 +172,7 @@ contracts/
   FaceProofRegistry.abi.json Precompiled ABI used by testnet_chain.py
 src/
   face_encoder.py            Face detection + 128-d embedding
-  social_search.py           Bing Visual Search reverse-image search
+  social_search.py           Google Cloud Vision reverse-image search
   perceptual_hash.py         pHash-based match confirmation
   merkle.py                  SHA-256 Merkle tree (build / prove / verify)
   simulated_chain.py         Local tamper-evident fallback chain
@@ -180,10 +188,10 @@ tests/                       Unit tests (merkle, simulated chain, pHash)
 
 ## Known limitations
 
-- **Search coverage depends on Bing's index.** Reverse image search only
-  surfaces posts that Bing has actually crawled and indexed; a very recent
-  or low-visibility post may not appear. No reverse-image search API can
-  guarantee finding every matching post on the web.
+- **Search coverage depends on Google's index.** Reverse image search only
+  surfaces posts that Google has actually crawled and indexed; a very
+  recent or low-visibility post may not appear. No reverse-image search
+  API can guarantee finding every matching post on the web.
 - **Perceptual hashing, not face verification, gates the match.** The
   pHash comparison confirms the *search-result image* looks like the input
   photo; it does not re-run face recognition on every candidate. A page
